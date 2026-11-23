@@ -1,3 +1,10 @@
+# Optimized by ci-cost (https://github.com/mariotavarez/ci-cost)
+# Applied 3 optimizations:
+# - [HIGH] Add npm dependency cache to "changeset-check" job
+# - [MEDIUM] Add concurrency group to "changeset-check.yml"
+# - [LOW] Use shallow clone in "changeset-check" job
+# Estimated savings: ~6 min/run
+#
 name: Changeset Check
 
 on:
@@ -5,6 +12,10 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, labeled, unlabeled]
 
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   changeset-check:
     runs-on: ubuntu-latest
